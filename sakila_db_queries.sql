@@ -1,4 +1,4 @@
-/* MySQL Sakila" Database queries */
+/* MySQL Sakila Database queries */
 
 -- Select Database --
 
@@ -47,9 +47,10 @@ ORDER BY last_name, first_name;
 -- 2d. Using IN, display the country_id and country columns of the following countries: 
 --     Afghanistan, Bangladesh, and China:
 
-SELECT country_id, country
-FROM country
-WHERE country IN ('Afghanistan', 'Bangladesh', 'China');
+SELECT country_id, 
+       country
+FROM   country
+WHERE  country IN ('Afghanistan', 'Bangladesh', 'China');
 
 
 -- 3a. You want to keep a description of each actor. You don't think you will be performing queries on a description,
@@ -120,7 +121,8 @@ DESCRIBE address;
 
 SELECT s.first_name, s.last_name, a.address
 FROM staff s 
-LEFT OUTER JOIN address a ON s.address_id = a.address_id;
+LEFT OUTER JOIN address a 
+ON s.address_id = a.address_id;
 
 
 -- 6b. Use JOIN to display the total amount rung up by each staff member in August of 2005. 
