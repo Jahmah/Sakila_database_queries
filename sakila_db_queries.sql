@@ -13,7 +13,7 @@ FROM    actor;
 -- 1b. Display the first and last name of each actor in a single column in upper case letters.
 --     Name the column Actor Name.
         
-SELECT CONCAT(first_name, ' ', last_name) 
+SELECT CONCAT(first_name, '  ', last_name) 
 AS    'Actor Name'
 FROM   actor;
 
@@ -126,19 +126,31 @@ LEFT OUTER JOIN address a ON s.address_id = a.address_id;
 -- 6b. Use JOIN to display the total amount rung up by each staff member in August of 2005. 
 --     Use tables staff and payment.
 
-SELECT SUM(p.amount), 
+SELECT SUM(p.amount) AS 'Total_Amount', 
          s.last_name
 FROM payment p 
-INNER JOIN staff s ON p.staff_id = s.staff_id AND p.payment_date BETWEEN '2005-08-01' AND '2005-08-31'
+INNER JOIN staff s 
+ON p.staff_id = s.staff_id 
+AND p.payment_date BETWEEN '2005-08-01' AND '2005-08-31'
 GROUP BY 2;
 
 
 -- 6c. List each film and the number of actors who are listed for that film. 
 --     Use tables film_actor and film. Use inner join.
 
-SELECT f.title, COUNT(fa.actor_id)
-FROM film f INNER JOIN film_actor fa ON f.film_id = fa.film_id
+SELECT f.title AS 'Title', 
+COUNT(fa.actor_id) As 'Actors_Count'
+FROM film f 
+INNER JOIN film_actor fa 
+ON f.film_id = fa.film_id
 GROUP BY f.title;
+
+
+-- 6d. How many copies of the film Hunchback Impossible exist in the inventory system?
+
+SELECT COUNT(f.title)
+FROM film f INNER JOIN inventory i ON f.film_id = i.film_id
+WHERE f.title = 'Hunchback Impossible';
 
 
 -- 6e. Using the tables payment and customer and the JOIN command, list the total paid by each customer. 
@@ -175,11 +187,7 @@ AND (title LIKE 'K%' or title LIKE 'Q%');
 
 
 
--- 6d. How many copies of the film Hunchback Impossible exist in the inventory system?
 
-SELECT COUNT(f.title)
-FROM film f INNER JOIN inventory i ON f.film_id = i.film_id
-WHERE f.title = 'Hunchback Impossible';
 
 
 
