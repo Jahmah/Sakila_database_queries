@@ -223,7 +223,7 @@ WHERE c.name = 'Family' ;
 -- 7e. Display the most frequently rented movies in descending order.
 
 SELECT COUNT(r.rental_id) AS 'Count', 
-            f.title as "Film"
+            f.title AS "Film"
 FROM film f 
 INNER JOIN inventory i ON f.film_id = i.film_id
 INNER JOIN rental r ON i.inventory_id = r.inventory_id 
@@ -271,8 +271,34 @@ LIMIT 5;
 
 
 
+-- 8a. In your new role as an executive, you would like to have an easy way of viewing 
+--      the Top five genres by gross revenue. Use the solution from the problem above to create a view. 
+
+CREATE VIEW top_five_genres_by_revenue AS 
+	SELECT c.name as "Genre", 
+           SUM(p.amount) AS "Gross Revenue"
+    FROM category c 
+    INNER JOIN film_category fc ON c.category_id = fc.category_id
+    INNER JOIN film f ON fc.film_id = f.film_id
+    INNER JOIN inventory i ON f.film_id = i.film_id
+	INNER JOIN rental r ON i.inventory_id = r.inventory_id
+    INNER JOIN payment p ON r.rental_id = p.rental_id
+    GROUP BY 1
+    ORDER BY 2 DESC
+    LIMIT 5;    
 
 
+
+-- 8b. How would you display the view that you created in 8a?
+
+SELECT * 
+FROM top_five_genres_by_revenue;
+
+
+
+-- 8c. You find that you no longer need the view top_five_genres. Write a query to delete it.
+
+DROP VIEW top_five_revenue_generating_genres;
 
 
 
