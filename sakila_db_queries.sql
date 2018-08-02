@@ -161,7 +161,8 @@ WHERE f.title = 'Hunchback Impossible';
 SELECT c.first_name, 
 	   c.last_name, 
 	   SUM(p.amount)
-FROM payment p INNER JOIN customer c ON p.customer_id = c.customer_id
+FROM payment p 
+INNER JOIN customer c ON p.customer_id = c.customer_id
 GROUP BY c.last_name
 ORDER BY c.last_name;
 
@@ -199,10 +200,84 @@ WHERE a.actor_id IN
 SELECT c.first_name, 
 	   c.last_name, 
        c.email
-FROM customer c INNER JOIN address a ON c.address_id = a.address_id
-	INNER JOIN city ci ON a.city_id = ci.city_id
-    INNER JOIN country co ON ci.country_id = co.country_id
+FROM customer c 
+INNER JOIN address a ON c.address_id = a.address_id
+INNER JOIN city ci ON a.city_id = ci.city_id
+INNER JOIN country co ON ci.country_id = co.country_id
 WHERE co.country = 'Canada';
+
+
+
+-- 7d. Sales have been lagging among young families, and you wish to target all family movies for a promotion. 
+--  Identify all movies categorized as famiy films.
+
+SELECT f.title
+FROM   film f 
+INNER JOIN film_category fc ON f.film_id = fc.film_id
+INNER JOIN category c ON fc.category_id = c.category_id
+WHERE c.name = 'Family' ;
+
+
+
+
+-- 7e. Display the most frequently rented movies in descending order.
+
+SELECT COUNT(r.rental_id) AS 'Count', 
+            f.title as "Film"
+FROM film f 
+INNER JOIN inventory i ON f.film_id = i.film_id
+INNER JOIN rental r ON i.inventory_id = r.inventory_id 
+GROUP BY 2
+ORDER BY 1 DESC;
+
+
+
+-- 7f. Write a query to display how much business, in dollars, each store brought in.
+
+SELECT SUM(p.amount) As 'Revenue($)', 
+           s.store_id
+FROM payment p 
+INNER JOIN rental r ON p.rental_id = r.rental_id
+INNER JOIN staff s ON r.staff_id = s.staff_id
+INNER JOIN store st ON s.store_id = st.store_id
+GROUP BY s.store_id;
+
+
+-- 7g. Write a query to display for each store its store ID, city, and country.
+
+SELECT s.store_id, 
+       c.city, 
+       co.country
+FROM store s 
+INNER JOIN address a ON s.address_id = a.address_id
+INNER JOIN city c ON a.city_id = c.city_id
+INNER JOIN country co ON c.country_id = co.country_id;
+
+
+
+-- 7h. List the top five genres in gross revenue in descending order. 
+
+SELECT c.name as "Genre", 
+       SUM(p.amount) AS "Gross Revenue"
+FROM category c 
+INNER JOIN film_category fc ON c.category_id = fc.category_id
+INNER JOIN film f ON fc.film_id = f.film_id
+INNER JOIN inventory i ON f.film_id = i.film_id
+INNER JOIN rental r ON i.inventory_id = r.inventory_id
+INNER JOIN payment p ON r.rental_id = p.rental_id
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 5;
+
+
+
+
+
+
+
+
+
+
 
 
 
