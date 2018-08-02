@@ -179,6 +179,33 @@ AND (title LIKE 'K%' or title LIKE 'Q%');
 
 
 
+-- 7b. Use subqueries to display all actors who appear in the film Alone Trip.
+
+SELECT a.first_name, 
+       a.last_name
+FROM actor a
+WHERE a.actor_id IN
+	(SELECT actor_id 
+    FROM film_actor 
+    WHERE film_id = (SELECT film_id FROM  film WHERE title = 'Alone Trip')
+    );
+
+
+
+-- 7c. You want to run an email marketing campaign in Canada, for which you will need the names and 
+--     email addresses of all Canadian customers. 
+--     Use joins to retrieve this information.
+
+SELECT c.first_name, 
+	   c.last_name, 
+       c.email
+FROM customer c INNER JOIN address a ON c.address_id = a.address_id
+	INNER JOIN city ci ON a.city_id = ci.city_id
+    INNER JOIN country co ON ci.country_id = co.country_id
+WHERE co.country = 'Canada';
+
+
+
 
 
 
