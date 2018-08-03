@@ -119,19 +119,17 @@ SELECT s.first_name,
 	   s.last_name, 
        a.address
 FROM staff s  
-LEFT OUTER JOIN address a 
-ON s.address_id = a.address_id;
+LEFT JOIN address a ON s.address_id = a.address_id;
 
-select first_name, last_name from staff;
 
 -- 6b. Use JOIN to display the total amount rung up by each staff member in August of 2005. 
 --     Use tables staff and payment.
 
 SELECT SUM(p.amount) AS 'Total_Amount', 
-         s.last_name
+		  s.last_name,
+          s.first_name
 FROM payment p 
-INNER JOIN staff s 
-ON p.staff_id = s.staff_id 
+INNER JOIN staff s ON p.staff_id = s.staff_id 
 AND p.payment_date BETWEEN '2005-08-01' AND '2005-08-31'
 GROUP BY 2;
 
@@ -140,7 +138,7 @@ GROUP BY 2;
 --     Use tables film_actor and film. Use inner join.
 
 SELECT f.title AS 'Title', 
-COUNT(fa.actor_id) As 'Actors_Count'
+       COUNT(fa.actor_id) As 'Actors_Count'
 FROM film f 
 INNER JOIN film_actor fa 
 ON f.film_id = fa.film_id
@@ -150,7 +148,8 @@ GROUP BY f.title;
 -- 6d. How many copies of the film Hunchback Impossible exist in the inventory system?
 
 SELECT COUNT(f.title)
-FROM film f INNER JOIN inventory i ON f.film_id = i.film_id
+FROM film f 
+INNER JOIN inventory i ON f.film_id = i.film_id
 WHERE f.title = 'Hunchback Impossible';
 
 
@@ -159,21 +158,22 @@ WHERE f.title = 'Hunchback Impossible';
 
 SELECT c.first_name, 
 	   c.last_name, 
-	   SUM(p.amount)
+	   SUM(p.amount) AS 'Total_Amount_Paid'
 FROM payment p 
 INNER JOIN customer c ON p.customer_id = c.customer_id
 GROUP BY c.last_name
 ORDER BY c.last_name;
 
 
--- 7a. The music of Queen and Kris Kristofferson have seen an unlikely resurgence. As an unintended consequence, 
---  films starting with the letters K and Q have also soared in popularity. Use subqueries to display the titles of
---  movies starting with the letters K and Q whose language is English.
+-- 7a. Use subqueries to display the titles of movies
+--     movies starting with the letters K and Q whose language is English.
 
 SELECT title 
 FROM film 
 WHERE language_id = (
-	SELECT language_id FROM language WHERE name = 'English'
+	  SELECT language_id 
+      FROM `language` 
+      WHERE name = 'English'
     )
 AND (title LIKE 'K%' or title LIKE 'Q%');
 
@@ -184,17 +184,18 @@ AND (title LIKE 'K%' or title LIKE 'Q%');
 SELECT a.first_name, 
        a.last_name
 FROM actor a
-WHERE a.actor_id IN
-	(SELECT actor_id 
+WHERE a.actor_id 
+IN (SELECT actor_id 
     FROM film_actor 
-    WHERE film_id = (SELECT film_id FROM  film WHERE title = 'Alone Trip')
+WHERE film_id = (SELECT film_id 
+                 FROM  film 
+				 WHERE title = 'Alone Trip')
     );
 
 
 
 -- 7c. You want to run an email marketing campaign in Canada, for which you will need the names and 
---     email addresses of all Canadian customers. 
---     Use joins to retrieve this information.
+--     email addresses of all Canadian customers. Use joins to retrieve this information.
 
 SELECT c.first_name, 
 	   c.last_name, 
@@ -295,7 +296,7 @@ FROM top_five_genres_by_revenue;
 
 
 
--- 8c. You find that you no longer need the view top_five_genres. Write a query to delete it.
+-- 8c. Delete the view top_five_genres_by_revenue.
 
 DROP VIEW top_five_revenue_generating_genres;
 
