@@ -94,9 +94,6 @@ WHERE first_name = 'GROUCHO'
 AND last_name = 'WILLIAMS';
 
 
-Update actor set first_name = 'GROUCHO' where first_name = 'MUCHO GROUCHO' and actor_id = 172;
-
-select first_name, last_name from actor where actor_id = 172;
 -- 4d. In a single query, if the first name of the actor is currently HARPO,change it to GROUCHO 
 --     Otherwise, change the first name to MUCHO GROUCHO.
 
@@ -116,13 +113,16 @@ DESCRIBE address;
 
 
 -- 6a. Use JOIN to display the first and last names, as well as the address, of each staff member.
---     Use the tables staff and address
+--     Use the tables staff and address:
 
-SELECT s.first_name, s.last_name, a.address
-FROM staff s 
+SELECT s.first_name, 
+	   s.last_name, 
+       a.address
+FROM staff s  
 LEFT OUTER JOIN address a 
 ON s.address_id = a.address_id;
 
+select first_name, last_name from staff;
 
 -- 6b. Use JOIN to display the total amount rung up by each staff member in August of 2005. 
 --     Use tables staff and payment.
