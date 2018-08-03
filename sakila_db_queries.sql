@@ -60,8 +60,7 @@ ADD COLUMN description BLOB NOT NULL;
 
 
 
--- 3b. Very quickly you realize that entering descriptions for each actor is too much effort. 
---     Delete the `description` column.
+-- 3b. Delete the `description` column.
 
 ALTER TABLE actor 
 DROP  description;
@@ -70,7 +69,7 @@ DROP  description;
 -- 4a. List the last names of actors, as well as how many actors have that last name. 
 
 SELECT last_name, 
-COUNT(*)
+	   COUNT(*)
 FROM actor
 GROUP BY 1
 ORDER BY 2 DESC;
@@ -80,14 +79,14 @@ ORDER BY 2 DESC;
 --     but only for names that are shared by at least two actors
 
 SELECT last_name, 
-COUNT(*)
+	   COUNT(*)
 FROM actor
 GROUP BY 1
-HAVING COUNT(*) >= 2 ;
+HAVING COUNT(*) >= 2 ; 
 
 
--- 4c. Oh, no! The actor HARPO WILLIAMS was accidentally entered in the actor table as GROUCHO WILLIAMS, 
---     the name of Harpo's second cousin's husband's yoga teacher. Write a query to fix the record.
+-- 4c. The actor HARPO WILLIAMS was accidentally entered in the actor table as GROUCHO WILLIAMS, 
+--     Write a query to fix the record.
 
 UPDATE actor 
 SET first_name = 'HARPO'
@@ -95,9 +94,10 @@ WHERE first_name = 'GROUCHO'
 AND last_name = 'WILLIAMS';
 
 
--- 4d. Perhaps we were too hasty in changing GROUCHO to HARPO.
---     It turns out that GROUCHO was the correct name after all! 
---     In a single query, if the first name of the actor is currently HARPO,change it to GROUCHO 
+Update actor set first_name = 'GROUCHO' where first_name = 'MUCHO GROUCHO' and actor_id = 172;
+
+select first_name, last_name from actor where actor_id = 172;
+-- 4d. In a single query, if the first name of the actor is currently HARPO,change it to GROUCHO 
 --     Otherwise, change the first name to MUCHO GROUCHO.
 
 UPDATE actor 
