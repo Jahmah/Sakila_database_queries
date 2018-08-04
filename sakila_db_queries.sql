@@ -1,6 +1,6 @@
 /* MySQL Sakila Database queries */
 
--- Select Database --
+-- Select Sakila Database --
 
 USE sakila;
 
@@ -140,8 +140,7 @@ GROUP BY 2;
 SELECT f.title AS 'Title', 
        COUNT(fa.actor_id) As 'Actors_Count'
 FROM film f 
-INNER JOIN film_actor fa 
-ON f.film_id = fa.film_id
+INNER JOIN film_actor fa ON f.film_id = fa.film_id
 GROUP BY f.title;
 
 
@@ -187,9 +186,9 @@ FROM actor a
 WHERE a.actor_id 
 IN (SELECT actor_id 
     FROM film_actor 
-WHERE film_id = (SELECT film_id 
-                 FROM  film 
-				 WHERE title = 'Alone Trip')
+    WHERE film_id = (SELECT film_id 
+                     FROM  film 
+				     WHERE title = 'Alone Trip')
     );
 
 
@@ -223,7 +222,7 @@ WHERE c.name = 'Family' ;
 -- 7e. Display the most frequently rented movies in descending order.
 
 SELECT COUNT(r.rental_id) AS 'Count', 
-            f.title AS "Film"
+            f.title AS 'Film'
 FROM film f 
 INNER JOIN inventory i ON f.film_id = i.film_id
 INNER JOIN rental r ON i.inventory_id = r.inventory_id 
@@ -298,7 +297,7 @@ FROM top_five_genres_by_revenue;
 
 -- 8c. Delete the view top_five_genres_by_revenue.
 
-DROP VIEW top_five_revenue_generating_genres;
+DROP VIEW top_five_genres_by_revenue;
 
 
 
